@@ -1,14 +1,19 @@
 package com.example
 
+import com.example.model.db.DbConfiguration
 import com.example.plugins.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
 }
 
 fun Application.module() {
-    configureSerialization()
-    configureDatabases()
+    install(ContentNegotiation) {
+        json()
+    }
     configureRouting()
+    DbConfiguration.init()
 }
