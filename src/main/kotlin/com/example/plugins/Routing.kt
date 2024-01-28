@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.model.dto.notFound.NotFoundResponse
 import com.example.routes.user.userRoutes
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -10,9 +11,9 @@ fun Application.configureRouting() {
         sourcePath()
         route("/v1") {
             get {
-                call.respondText("foi")
+                call.respond(NotFoundResponse(message = "Nothing to see here", status = 404))
             }
-            route("/user") {
+            route("/users") {
                 userRoutes()
             }
 

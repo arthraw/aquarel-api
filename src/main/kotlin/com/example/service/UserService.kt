@@ -1,9 +1,11 @@
 package com.example.service
 
-import com.example.model.db.dao.user.User
-import com.example.model.db.dao.user.UserInsert
-import com.example.model.db.dao.user.UserReturns
+import com.example.model.dto.userDTO.User
+import com.example.model.dto.userDTO.UserInsert
+import com.example.model.dto.userDTO.UserReturns
 import com.example.repository.UserRepository
+import com.example.utils.PasswordHash
+
 
 class UserService(private val userRepository: UserRepository) {
 
@@ -11,7 +13,7 @@ class UserService(private val userRepository: UserRepository) {
         return userRepository.insertUser(
             username = user.username,
             email = user.email,
-            password = user.password,
+            password = PasswordHash.hashPassword(user.password),
             createAccountDate = user.createAccountDate
         )
     }
@@ -33,9 +35,16 @@ class UserService(private val userRepository: UserRepository) {
         userRepository.updateUserEmail(userId, email)
     }
     suspend fun updateUserPassword(userId: String, password: String) {
-        userRepository.updateUserPassword(userId, password)
+        userRepository.updateUserPassword(userId, PasswordHash.hashPassword(password))
     }
     suspend fun deleteAccount(userId: String) {
         userRepository.deleteUserById(userId)
     }
+    suspend fun checkUsername(name : String) : Boolean {
+        return userRepository.checkIfNameAlreadyExists(name)
+    }
+    suspend fun checkEmail(email : String) : Boolean {
+        return userRepository.checkIfEmailAlreadyExists(email)
+    }
+
 }
