@@ -1,9 +1,10 @@
 .gradle
-build/
 src/.env
+build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+src/.env
 
 ### STS ###
 .apt_generated
