@@ -1,10 +1,9 @@
 package com.example.data.userData
 
 import com.example.model.db.DbConfiguration.dbQuery
-import com.example.model.db.dao.user.User
 import com.example.model.db.dao.user.UserTable
+import com.example.model.dto.userDTO.User
 import com.example.repository.UserRepository
-import com.example.utils.PasswordHash
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDate
@@ -50,11 +49,23 @@ class UserRepositoryImpl : UserRepository {
 
     override suspend fun updateUserPassword(userId: String, password: String): Unit = dbQuery {
         UserTable.update({ UserTable.id eq userId }) {
-            it[UserTable.password] = PasswordHash.hashPassword(password)
+            it[UserTable.password] = password
         }
     }
 
     override suspend fun deleteUserById(userId: String): Unit = dbQuery {
         UserTable.deleteWhere{ UserTable.id eq userId }
+    }
+
+    override suspend fun checkIfNameAlreadyExists(username: String): Boolean = dbQuery {
+        UserTable.select(UserTable.username eq username).empty()
+    }
+
+    override suspend fun checkIfEmailAlreadyExists(email: String): Boolean = dbQuery {
+        UserTable.select(UserTable.email eq email).empty()
+    }
+
+    override suspend fun checkCorrectPassword(password: String): Boolean = dbQuery {
+        UserTable.select(UserTable.password eq password).empty()
     }
 }

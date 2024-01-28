@@ -1,6 +1,6 @@
 package com.example.repository
 
-import com.example.model.db.dao.user.User
+import com.example.model.dto.userDTO.User
 import java.time.LocalDate
 
 interface UserRepository {
@@ -11,4 +11,7 @@ interface UserRepository {
     suspend fun updateUserEmail(userId: String, email: String)
     suspend fun updateUserPassword(userId: String, password: String)
     suspend fun deleteUserById(userId : String)
+    suspend fun checkIfNameAlreadyExists(username : String) : Boolean
+    suspend fun checkIfEmailAlreadyExists(email : String) : Boolean
+    suspend fun checkCorrectPassword(password: String) : Boolean
 }
