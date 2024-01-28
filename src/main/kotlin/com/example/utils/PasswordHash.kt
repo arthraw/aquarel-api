@@ -8,7 +8,7 @@ object PasswordHash {
         return BCrypt.hashpw(pass, salt)
     }
 
-    fun checkPasword(inputPass : String, hashPass: String): Boolean {
+    fun checkPassword(inputPass : String, hashPass: String): Boolean {
         return BCrypt.checkpw(inputPass, hashPass)
     }
 }
