@@ -13,5 +13,4 @@ interface UserRepository {
     suspend fun deleteUserById(userId : String)
     suspend fun checkIfNameAlreadyExists(username : String) : Boolean
     suspend fun checkIfEmailAlreadyExists(email : String) : Boolean
-    suspend fun checkCorrectPassword(password: String) : Boolean
 }

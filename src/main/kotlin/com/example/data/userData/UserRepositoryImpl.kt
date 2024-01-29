@@ -64,8 +64,4 @@ class UserRepositoryImpl : UserRepository {
     override suspend fun checkIfEmailAlreadyExists(email: String): Boolean = dbQuery {
         UserTable.select(UserTable.email eq email).empty()
     }
-
-    override suspend fun checkCorrectPassword(password: String): Boolean = dbQuery {
-        UserTable.select(UserTable.password eq password).empty()
-    }
 }

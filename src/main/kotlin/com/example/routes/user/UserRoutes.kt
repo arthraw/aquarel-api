@@ -58,12 +58,25 @@ fun Route.userRoutes() {
         val content = call.receiveText()
         val updateData = Json.decodeFromString<PatchUser>(content)
 
-        if (userId.isNotEmpty()) {
-            service.updateUsername(userId, updateData.username ?: "")
-            call.respondText("User name updated", status = HttpStatusCode.OK)
-        } else {
-            call.respondText("Error in name update, verify if user Id was correct", status = HttpStatusCode.NotFound)
+        when(updateData.toString()) {
+            updateData.username -> {
+                if (userId.isNotEmpty()) {
+                    service.updateUsername(userId, updateData.username)
+                    call.respondText("User name updated", status = HttpStatusCode.OK)
+                } else {
+                    call.respondText("Error in name update, verify if user Id was correct", status = HttpStatusCode.NotFound)
+                }
+            }
+            updateData.email -> {
+                if (userId.isNotEmpty()) {
+                    service.updateUserEmail(userId, updateData.email)
+                    call.respondText("User email updated", status = HttpStatusCode.OK)
+                } else {
+                    call.respondText("Error in email update, verify if user Id was correct", status = HttpStatusCode.NotFound)
+                }
+            }
         }
+
     }
     patch("/{id}/edit") {
         val userId = call.parameters["id"] ?: ""

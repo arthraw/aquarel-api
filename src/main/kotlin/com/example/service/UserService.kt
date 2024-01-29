@@ -46,5 +46,8 @@ class UserService(private val userRepository: UserRepository) {
     suspend fun checkEmail(email : String) : Boolean {
         return userRepository.checkIfEmailAlreadyExists(email)
     }
+    fun verifyPassword(inputPass : String, password: String) : Boolean {
+        return PasswordHash.checkPassword(inputPass = inputPass, hashPass = password)
+    }
 
 }

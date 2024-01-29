@@ -32,3 +32,8 @@ data class UserInsert(
     @Serializable(with = LocalDateSerializer::class)
     val createAccountDate: LocalDate
 )
+@Serializable
+data class UserLogin(
+    val email: String,
+    val password: String,
+)
