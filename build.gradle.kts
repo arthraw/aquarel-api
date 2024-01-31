@@ -44,6 +44,9 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
 
+    //Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
+
     // Bcrypt
     implementation("org.mindrot:jbcrypt:$bcrypt_version")
 
@@ -67,6 +70,7 @@ dependencies {
     // Tests
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
