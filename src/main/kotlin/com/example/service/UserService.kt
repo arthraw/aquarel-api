@@ -13,8 +13,7 @@ class UserService(private val userRepository: UserRepository) {
         return userRepository.insertUser(
             username = user.username,
             email = user.email,
-            password = PasswordHash.hashPassword(user.password),
-            createAccountDate = user.createAccountDate
+            password = PasswordHash.hashPassword(user.password)
         )
     }
     suspend fun getUsers(): List<User> {

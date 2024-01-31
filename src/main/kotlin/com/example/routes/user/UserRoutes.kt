@@ -40,8 +40,7 @@ fun Route.userRoutes() {
                     UserInsert(
                         username = data.username,
                         email = data.email,
-                        password = data.password,
-                        createAccountDate = data.createAccountDate
+                        password = data.password
                     )
                 )
             } else {
@@ -58,8 +57,16 @@ fun Route.userRoutes() {
         val content = call.receiveText()
         val updateData = Json.decodeFromString<PatchUser>(content)
 
-        when(updateData.toString()) {
-            updateData.username -> {
+        when {
+            updateData.username?.isNotEmpty() == true && updateData.email?.isNotEmpty() == true -> {
+                if (userId.isNotEmpty()) {
+                    service.updateUsername(userId, updateData.username)
+                    service.updateUserEmail(userId, updateData.email)
+                    call.respondText("User updated", status = HttpStatusCode.OK)
+                } else {
+                    call.respondText("Error in user update, verify if user Id was correct", status = HttpStatusCode.NotFound)
+                }            }
+            updateData.username?.isNotEmpty() == true -> {
                 if (userId.isNotEmpty()) {
                     service.updateUsername(userId, updateData.username)
                     call.respondText("User name updated", status = HttpStatusCode.OK)
@@ -67,7 +74,7 @@ fun Route.userRoutes() {
                     call.respondText("Error in name update, verify if user Id was correct", status = HttpStatusCode.NotFound)
                 }
             }
-            updateData.email -> {
+            updateData.email?.isNotEmpty() == true -> {
                 if (userId.isNotEmpty()) {
                     service.updateUserEmail(userId, updateData.email)
                     call.respondText("User email updated", status = HttpStatusCode.OK)
@@ -75,8 +82,13 @@ fun Route.userRoutes() {
                     call.respondText("Error in email update, verify if user Id was correct", status = HttpStatusCode.NotFound)
                 }
             }
+            updateData.password?.isNotEmpty() == true -> {
+                call.respondText("Error in password update, verify if user Id was correct", status = HttpStatusCode.NotFound)
+            }
+            else -> {
+                call.respondText("ERROR", status = HttpStatusCode.InternalServerError)
+            }
         }
-
     }
     patch("/{id}/edit") {
         val userId = call.parameters["id"] ?: ""
@@ -88,18 +100,6 @@ fun Route.userRoutes() {
             call.respondText("User email updated", status = HttpStatusCode.OK)
         } else {
             call.respondText("Error in email update, verify if user Id was correct", status = HttpStatusCode.NotFound)
-        }
-    }
-    patch("/{id}/edit") {
-        val userId = call.parameters["id"] ?: ""
-        val content = call.receiveText()
-        val updateData = Json.decodeFromString<PatchUser>(content)
-
-        if (userId.isNotEmpty()) {
-            service.updateUserPassword(userId, updateData.password ?: "")
-            call.respondText("User password updated", status = HttpStatusCode.OK)
-        } else {
-            call.respondText("Error in password update, verify if user Id was correct", status = HttpStatusCode.NotFound)
         }
     }
     delete("/{id}/edit") {

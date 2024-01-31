@@ -6,7 +6,6 @@ import com.example.model.dto.userDTO.User
 import com.example.repository.UserRepository
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import java.time.LocalDate
 
 class UserRepositoryImpl : UserRepository {
 
@@ -25,12 +24,11 @@ class UserRepositoryImpl : UserRepository {
         UserTable.select(UserTable.id eq userId).map(::resultUserRow)
     }
 
-    override suspend fun insertUser(username : String, email: String, password: String, createAccountDate: LocalDate): Unit = dbQuery {
+    override suspend fun insertUser(username : String, email: String, password: String): Unit = dbQuery {
         val insertData = UserTable.insert {
             it[UserTable.username] = username
             it[UserTable.email] = email
             it[UserTable.password] = password
-            it[UserTable.createAccountDate] = createAccountDate
         }
         insertData.resultedValues?.singleOrNull()?.let(::resultUserRow)
     }

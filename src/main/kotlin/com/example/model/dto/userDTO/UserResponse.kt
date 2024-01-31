@@ -28,9 +28,7 @@ data class UserReturns(
 data class UserInsert(
     val username: String,
     val email: String,
-    val password: String,
-    @Serializable(with = LocalDateSerializer::class)
-    val createAccountDate: LocalDate
+    val password: String
 )
 @Serializable
 data class UserLogin(
