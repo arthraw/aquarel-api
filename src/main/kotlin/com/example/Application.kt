@@ -1,9 +1,7 @@
 package com.example
 
 import com.example.model.db.DbConfiguration
-import com.example.model.dto.userDTO.UserIdToken
-import com.example.model.dto.userDTO.UserLogin
-import com.example.plugins.*
+import com.example.plugins.configureRouting
 import com.example.utils.JwtConfig
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
