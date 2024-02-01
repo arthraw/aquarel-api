@@ -40,6 +40,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.github.cdimascio:dotenv-kotlin:$dotenv_version")
 
+    // Ktor
+    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
