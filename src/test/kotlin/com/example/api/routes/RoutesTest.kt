@@ -1,4 +1,4 @@
-package com.example.api
+package com.example.api.routes
 
 import com.example.model.dto.userDTO.UserInsert
 import com.example.model.dto.userDTO.UserReturns
