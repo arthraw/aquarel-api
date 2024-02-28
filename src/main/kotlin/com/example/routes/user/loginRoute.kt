@@ -2,6 +2,7 @@ package com.example.routes.user
 
 import com.example.model.dto.userDTO.UserLogin
 import com.example.utils.JwtConfig
+import com.google.gson.Gson
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -30,7 +31,10 @@ fun Route.loginRoute() {
             )
             if (authUser) {
                 val token : String = JwtConfig.createToken(userLogin)
-                call.respondText(text = mapOf("token" to token).toString(), status = HttpStatusCode.OK)
+                val responseMap = mapOf("token" to token)
+                val jsonResponse = Gson().toJson(responseMap)
+
+                call.respondText(text = jsonResponse, contentType = ContentType.Application.Json, status = HttpStatusCode.OK)
             } else {
                 call.respondText("wrong user password", status = HttpStatusCode.NotFound)
             }
