@@ -41,11 +41,16 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:$dotenv_version")
 
     // Ktor
+    implementation("io.ktor:ktor-server-core:2.0.0")
+    implementation("io.ktor:ktor-server-netty:2.0.0")
     implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
+
+    // jackson
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
 
     //Gson
     implementation ("com.google.code.gson:gson:2.10.1")
