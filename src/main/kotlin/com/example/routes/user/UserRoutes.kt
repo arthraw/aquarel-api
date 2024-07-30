@@ -35,7 +35,7 @@ fun Route.userRoutes() {
             val nameNotExists = service.checkUsername(data.username)
             val emailNotExists = service.checkEmail(data.email)
 
-            if (nameNotExists && emailNotExists) {
+            if (nameNotExists && emailNotExists.isEmpty()) {
                 service.createUser(
                     UserInsert(
                         username = data.username,

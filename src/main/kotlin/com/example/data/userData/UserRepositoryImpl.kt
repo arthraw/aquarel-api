@@ -59,7 +59,7 @@ class UserRepositoryImpl : UserRepository {
         UserTable.select(UserTable.username eq username).empty()
     }
 
-    override suspend fun checkIfEmailAlreadyExists(email: String): Boolean = dbQuery {
-        UserTable.select(UserTable.email eq email).empty()
+    override suspend fun checkIfEmailAlreadyExists(email: String): List<User> = dbQuery {
+        UserTable.select(UserTable.email eq email).map(::resultUserRow)
     }
 }

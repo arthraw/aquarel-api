@@ -15,13 +15,12 @@ fun Route.loginRoute() {
         try {
             val userData = call.receive<UserLogin>()
 
-            val user = service.getUsers().filter {
-                it.email == userData.email
-            }
-            if (user.first().email != userData.email) {
+            val userSearch = service.checkEmail(userData.email)
+
+            if (userSearch.isEmpty()) {
                 call.respondText("wrong user email", status = HttpStatusCode.NotFound)
             }
-            val userPassHashed = user.map { it.password }
+            val userPassHashed = userSearch.map { it.password }
 
             val authUser = service.verifyPassword(userData.password, userPassHashed.first())
 
