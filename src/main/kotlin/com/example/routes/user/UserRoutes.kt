@@ -5,6 +5,7 @@ import com.example.model.dto.userDTO.PatchUser
 import com.example.model.dto.userDTO.UserInsert
 import com.example.repository.UserRepository
 import com.example.service.UserService
+import io.github.cdimascio.dotenv.dotenv
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -16,14 +17,34 @@ import kotlinx.serialization.json.Json
 val data: UserRepository = UserRepositoryImpl()
 val service = UserService(data)
 
+val dotenv = dotenv {
+    directory = "src/.env"
+}
+
 fun Route.userRoutes() {
     get {
+        val apiToken = call.request.headers["token"] ?: ""
+        if (apiToken.isEmpty()) {
+            call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+        }
+        val trueToken = dotenv.get("API_TOKEN") ?: ""
+        if (apiToken != trueToken) {
+            call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+        }
         val listUsers = service.getUsers()
         call.respond(listUsers)
     }
     get("/{id}") {
         val userId = call.parameters["id"]
+        val apiToken = call.request.headers["token"] ?: ""
 
+        if (apiToken.isEmpty()) {
+            call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+        }
+        val trueToken = dotenv.get("API_TOKEN") ?: ""
+        if (apiToken != trueToken) {
+            call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+        }
         if (userId != null) {
             val search = service.getUserById(userId)
             call.respond(search)
@@ -32,6 +53,15 @@ fun Route.userRoutes() {
     post {
         try {
             val data = call.receive<UserInsert>()
+            val apiToken = call.request.headers["token"] ?: ""
+
+            if (apiToken.isEmpty()) {
+                call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+            }
+            val trueToken = dotenv.get("API_TOKEN") ?: ""
+            if (apiToken != trueToken) {
+                call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+            }
             val nameNotExists = service.checkUsername(data.username)
             val emailNotExists = service.checkEmail(data.email)
 
@@ -54,6 +84,15 @@ fun Route.userRoutes() {
     }
     patch("/{id}/edit") {
         val userId = call.parameters["id"] ?: ""
+        val apiToken = call.request.headers["token"] ?: ""
+
+        if (apiToken.isEmpty()) {
+            call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+        }
+        val trueToken = dotenv.get("API_TOKEN") ?: ""
+        if (apiToken != trueToken) {
+            call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+        }
         val content = call.receiveText()
         val updateData = Json.decodeFromString<PatchUser>(content)
 
@@ -92,6 +131,15 @@ fun Route.userRoutes() {
     }
     patch("/{id}/edit") {
         val userId = call.parameters["id"] ?: ""
+        val apiToken = call.request.headers["token"] ?: ""
+
+        if (apiToken.isEmpty()) {
+            call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+        }
+        val trueToken = dotenv.get("API_TOKEN") ?: ""
+        if (apiToken != trueToken) {
+            call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+        }
         val content = call.receiveText()
         val updateData = Json.decodeFromString<PatchUser>(content)
 
@@ -104,6 +152,15 @@ fun Route.userRoutes() {
     }
     delete("/{id}/edit") {
         val userId = call.parameters["id"] ?: ""
+        val apiToken = call.request.headers["token"] ?: ""
+
+        if (apiToken.isEmpty()) {
+            call.respondText("API Token is empty", status = HttpStatusCode.BadRequest)
+        }
+        val trueToken = dotenv.get("API_TOKEN") ?: ""
+        if (apiToken != trueToken) {
+            call.respondText("Wrong API Token", status = HttpStatusCode.BadRequest)
+        }
         if (userId.isNotEmpty()) {
             service.deleteAccount(userId)
             call.respondText("Account deleted", status = HttpStatusCode.OK)

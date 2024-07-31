@@ -1,7 +1,7 @@
 package com.example.plugins
 
 import com.example.model.dto.notFound.NotFoundResponse
-import com.example.routes.user.loginRoute
+import com.example.routes.login.loginRoute
 import com.example.routes.user.userRoutes
 import io.ktor.server.application.*
 import io.ktor.server.response.*

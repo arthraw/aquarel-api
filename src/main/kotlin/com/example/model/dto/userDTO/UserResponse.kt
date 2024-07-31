@@ -18,6 +18,7 @@ data class PatchUser(
     val username: String? = null,
     val email: String? = null,
     val password: String? = null,
+    val apiToken: String
 )
 @Serializable
 data class UserReturns(
@@ -28,7 +29,7 @@ data class UserReturns(
 data class UserInsert(
     val username: String,
     val email: String,
-    val password: String
+    val password: String,
 )
 @Serializable
 data class UserLogin(
